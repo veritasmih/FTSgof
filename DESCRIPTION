@@ -1,0 +1,36 @@
+Package: FTSgof
+Type: Package
+Title: White noise and goodness-of-fit tests for functional time series
+        in R
+Version: 1.0.0
+Authors@R: c(
+    person("Mihyun", "Kim", email = "mihyun.kim@mail.wvu.edu", role = c("aut", "cre")),
+    person("Chi-Kuang", "Yeh", email = "chi-kuang.yeh@uwaterloo.ca", role = c("aut"),
+             comment = c(ORCID = "0000-0001-7057-2096")),
+    person("Yuqian", "Zhao", email = "yuqian.Zhao@sussex.ac.uk", role = c("aut")),
+    person("Gregory", "Rice", email = "grice@uwaterloo.ca", role = c("ctb"))
+    )
+Maintainer: Mihyun Kim <mihyun.kim@mail.wvu.edu>
+Description: The FTSgof package offers comprehensive tools for the analysis of functional
+    time series (FTS) data, focusing on white noise hypothesis testing and
+    goodness-of-fit evaluations. It includes implementations of functional
+    autoregressive (FAR) and ARCH/GARCH models, alongside functions for
+    simulating data and advanced visualization techniques, such as 3D
+    rainbow plots.
+License: GPL-3
+Encoding: UTF-8
+Depends: R (>= 3.5.0)
+Imports: sde, graphics, stats, rgl, fda, nloptr, sfsmisc, MASS
+RoxygenNote: 7.3.2
+Language: en-US
+URL: https://github.com/veritasmih/FTSgof
+BugReports: https://github.com/veritasmih/FTSgof/issues
+Config/testthat/edition: 3
+SystemRequirements: XQuartz (https://www.xquartz.org/)
+Suggests: testthat (>= 3.0.0)
+NeedsCompilation: no
+Packaged: 2024-09-19 17:04:33 UTC; chikuang
+Author: Mihyun Kim [aut, cre],
+  Chi-Kuang Yeh [aut] (<https://orcid.org/0000-0001-7057-2096>),
+  Yuqian Zhao [aut],
+  Gregory Rice [ctb]

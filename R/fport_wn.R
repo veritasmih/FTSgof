@@ -1,0 +1,163 @@
+#' White Noise Hypothesis Tests for Functional Times Series
+#'
+#' @description It computes a variety of white noise tests for functional times series (FTS) data. All white noise tests in this package are accessible through this function.
+#'
+#' @param f_data A \eqn{J \times N} matrix of functional time series data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
+#' @param test A string specifying the hypothesis test. Currently available tests are referred
+#' to by their string handles: "autocovariance", "spherical" and "ch". Please see the Details section of the documentation.
+#' @param H A positive integer specifying the maximum lag for which test statistics are computed.
+#' @param iid A Boolean value used in the "autocovariance" test. If given TRUE, the hypothesis test will use the strong-white
+#' noise (SWN) assumption instead of the weak white noise (WWN) assumption.
+#' @param M A positive integer specifying the number of Monte Carlo simulations used to approximate the null distribution in the "autocovariance" test under the WWN assumption.
+#' If \eqn{M = NULL, M = \text{floor}((\max(150 - N, 0) + \max(100 - J, 0) + (J / \sqrt{2})))},
+#' ensuring that the number of Monte Carlo simulations is adequate based on the dataset size.
+#' @param stat_Method A string specifying the test method to be used in the "ch" test. Options include:
+#' \describe{
+#'   \item{"norm"}{Uses \eqn{V_{N,H}}.}
+#'   \item{"functional"}{Uses \eqn{M_{N,H}}.}
+#' }
+#' @param pplot A Boolean value. If TRUE, the function will produce a plot of p-values of the test
+#' as a function of maximum lag \eqn{H}, ranging from \eqn{H=1} to \eqn{H=20}, which may increase the computation time.
+#'
+#'
+#' @details
+#' This function performs white noise hypothesis testing for functional time series (FTS) data. It offers several types of tests:
+#'
+#' 1. Test based on fACF (test = "autocovariance"):
+#'    This test evaluates the sum of the squared \eqn{L^2}-norm of the sample autocovariance kernels:
+#'    \deqn{
+#'    KRS_{N,H} = N \sum_{h=1}^H \|\hat{\gamma}_{N,h}\|^2,
+#'    }
+#'    where
+#'    \eqn{
+#'    \hat{\gamma}_{N,h}(t,s)=\frac{1}{N}\sum_{i=1}^{N-h} (X_i(t)-\bar{X}_N(t))(X_{i+h}(s)-\bar{X}_N(s))},
+#'    \eqn{\bar{X}_N(t) = \frac{1}{N} \sum_{i=1}^N X_i(t)}
+#'    It assesses the cumulative significance of lagged autocovariance kernels up to a user-specified maximum lag \eqn{H}.
+#'    A higher value of \eqn{KRS_{N,H}} suggests a potential departure from a white noise process.
+#'    The null distribution is approximated under both strong and weak white noise assumptions.
+#'    Optional parameters include 'f_data', 'test', 'H', 'iid', 'M', and 'pplot'.
+#'
+#' 2. Test based on fSACF (test = "spherical"):
+#'    This test evaluates the sum of the squared \eqn{L^2}-norm of the sample spherical autocorrelation coefficients:
+#'    \deqn{
+#'    S_{N,H} = N \sum_{h=1}^H \|\tilde{\rho}_{h}\|^2,
+#'    }
+#'    where \eqn{\tilde\rho_h=\frac{1}{N}\sum_{i=1}^{N-h} \langle \frac{X_i - \tilde{\mu}}{\|X_i - \tilde{\mu}\|}, \frac{X_{i+h} - \tilde{\mu}}{\|X_{i+h} - \tilde{\mu}\|} \rangle},
+#'    and \eqn{\tilde{\mu}} is the estimated spatial median of the series.
+#'    It assesses the cumulative significance of lagged spherical autocorrelation coefficients up to a user-specified maximum lag \eqn{H}.
+#'    A higher value of \eqn{S_{N,H}} suggests a potential departure from a white noise process.
+#'    The null distribution is approximated under strong white noise assumptions.
+#'    Optional parameters include 'f_data', 'test', 'H', and 'pplot'.
+#'
+#' 3. Test for Conditional Heteroscedasticity (test = "ch"):
+#'    This test investigates whether the functional time series exhibits conditional heteroscedasticity. Two portmanteau-type statistics are used:
+#'    \itemize{
+#'      \item Norm-based statistic: \eqn{V_{N,H} = N \sum_{h=1}^H \hat{\gamma}^2_{X^2}(h)}, where \eqn{\hat{\gamma}^2_{X^2}(h)} is the sample autocorrelation of the time series \eqn{||X_1||^2, \dots, ||X_N||^2}, with \eqn{H} as the maximum lag length.
+#'      \item Fully functional statistic: \eqn{M_{N,H} = N \sum_{h=1}^H \|\hat{\gamma}_{X^2,N,h}\|^2}, where \eqn{\hat{\gamma}_{X^2,N,h}(t,s) = \frac{1}{N} \sum_{i=1}^{N-h} [X_i^2(t) - \bar{X}^2(t)][X^2_{i+h}(s) - \bar{X}(s)]}, with \eqn{\|\cdot\|} representing the \eqn{L^2} norm and \eqn{\bar{X}^2(t) = \frac{1}{N} \sum_{i=1}^N X_i^2(t)}.
+#'    }
+#'    Optional parameters for this test include 'f_data', 'test', 'H', 'stat_Method', and 'pplot'.
+#'
+#' @return
+#'
+#' A summary is printed with a brief explanation of the test and the p-value.
+#'
+#' @references
+#' [1] Kokoszka P., Rice G., Shang H.L. (2017). Inference for the autocovariance of a functional time series
+#' under conditional heteroscedasticity. Journal of Multivariate Analysis, 162, 32-50.
+#'
+#' [2] Yeh CK, Rice G, Dubin JA (2023). “Functional spherical autocorrelation: A robust estimate of
+#' the autocorrelation of a functional time series.” Electronic Journal of Statistics, 17, 650–687.
+#'
+#' [3] Rice, G., Wirjanto, T., Zhao, Y. (2020). Tests for conditional heteroscedasticity of functional
+#' data. Journal of Time Series Analysis. 41(6), 733-758. <doi:10.1111/jtsa.12532>.
+#'
+#'
+#' @examples
+#' \dontrun{
+#' data(Spanish_elec)
+#' fport_wn(Spanish_elec, test = "autocovariance", pplot = TRUE)
+#' fport_wn(Spanish_elec, test = "spherical", H = 15, pplot = TRUE)
+#'
+#' # generate fARCH(1)
+#' yd_arch <- dgp.fgarch(J = 50, N = 200, type = "arch")$garch_mat
+#' fport_wn(yd_arch, test = "ch", H = 20, stat_Method = "norm", pplot = TRUE)
+#' fport_wn(yd_arch, test = "ch", H = 20, stat_Method = "functional", pplot = TRUE)
+#' }
+#'
+#'
+#' @export
+#' @import stats
+fport_wn <- function(f_data, test = "autocovariance", H=10, iid=FALSE, M=NULL,
+                       stat_Method = "functional", pplot=FALSE) {
+
+  tests = c("autocovariance", "spherical", "ch")
+
+  if (!(test %in% tests)) {
+    stop("Please see the documentation for available tests.")
+  }
+  if (!is.matrix(f_data)) {
+    stop("Invalid arguments, functional data f_data must be passed in matrix form.")
+  }
+  if (!is.null(H)) {
+    if (!all.equal(H, as.integer(H)) | H <= 0) {
+      stop("Invalid arguments, lag must be a positive integer")
+    }
+  }
+  if (!is.logical(iid)) {
+    stop("Invalid arguments, the iid parameter must be logical values.")
+  }
+  if (!is.null(M)) {
+    if (!all.equal(M, as.integer(M)) | M < 0) {
+      stop("Invalid arguments, M must be a positive integer or NULL.")
+    }
+  }
+  iid_error = base::simpleError("When iid = true, M must be NULL because it does not use Monte Carlo simulations")
+  if ((iid == TRUE) & (!is.null(M))) {
+    stop(iid_error)
+  }
+
+
+  if (test == "autocovariance") {
+
+    res<-fACF_test(f_data, H, iid, M, pplot, alpha=0.05, suppress_raw_output=FALSE, suppress_print_output=TRUE)
+
+
+    title_print <- sprintf("Autocovariance Test\n\n")
+    if (iid == TRUE){
+      null_print <- sprintf("Null hypothesis: the series is a strong white noise (iid).\n")
+    }else{
+      null_print <- sprintf("Null hypothesis: the series is a weak white noise (sequentially uncorrelated).\n")
+
+    }
+    samp_print <- sprintf("sample size = %d\n", NCOL(f_data))
+    lag_print <- sprintf("maximum lag H = %d\n", H)
+    p_val_print <- sprintf("p-value = %f\n", res$p_value)
+    message(c(title_print, null_print, samp_print, lag_print, p_val_print))
+
+    #return(list(statistic = res$statistic, p_value = res$p_value))
+
+  } else if (test == "spherical") {
+    res<-fSACF_test(f_data, H, alpha = 0.05, pplot, suppress_raw_output=FALSE, suppress_print_output=TRUE)
+
+    title_print <- sprintf("Spherical Test\n\n")
+    null_print <- sprintf("Null hypothesis: the series is a strong white noise (iid).\n")
+    samp_print <- sprintf("sample size = %d\n", NCOL(f_data))
+    lag_print <- sprintf("maximum lag H = %d\n", H)
+    p_val_print <- sprintf("p-value = %f\n", res$p_value)
+    message(c(title_print, null_print, samp_print, lag_print, p_val_print))
+
+
+    #return(list(statistic = res$statistic, p_value = res$p_value))
+  } else if (test == "ch") {
+    res<-fCH_test(f_data, H, stat_Method, pplot)
+
+    title_print <- sprintf("Test for Conditional Heteroscedasticity\n\n")
+    null_print <- sprintf("Null hypothesis: the series is a strong white noise (iid).\n")
+    samp_print <- sprintf("sample size = %d\n", NCOL(f_data))
+    lag_print <- sprintf("maximum lag H = %d\n", H)
+    method_print <- sprintf("test type = %s\n", stat_Method)
+    p_val_print <- sprintf("p-value = %f\n", res$p_value)
+    message(c(title_print, null_print, samp_print, lag_print,  method_print, p_val_print))
+  }
+
+}
