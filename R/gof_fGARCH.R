@@ -31,6 +31,7 @@
 #' @examples
 #' \dontrun{
 #' # generate discrete evaluations of the FGARCH process.
+#' set.seed(42)
 #' yd = dgp.fgarch(J=50, N=200, type = "garch")$garch_mat
 #'
 #' # test the adequacy of the FARCH(1) model.
