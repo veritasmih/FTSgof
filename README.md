@@ -1,11 +1,9 @@
 FTSgof: White noise and goodness-of-fit tests for functional time series
 in R
 ================
-*Mihyun Kim, Gregory Rice, Chi-Kuang Yeh, Yuqian Zhao*  
-University of West Virginia, University of Waterloo, McGill University,
-University of Sussex
+*Mihyun Kim, Gregory Rice, Chi-Kuang Yeh, Yuqian Zhao*
 
-*September 25, 2024*
+*September 26, 2024*
 
 ### Description
 
