@@ -4,3 +4,16 @@
 .httr-oauth
 .DS_Store
 .quarto
+
+.Ruserdata
+inst/doc
+
+# package 
+vignette/*_cache
+vignette/*_files
+vignettes/*.html
+vignettes/*.R
+vignettes/FTSgof/
+inst/doc/*.html
+/doc/
+/Meta/
