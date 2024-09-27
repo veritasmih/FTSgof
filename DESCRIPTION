@@ -1,6 +1,6 @@
 Package: FTSgof
 Type: Package
-Title: White noise and goodness-of-fit tests for functional time series
+Title: White Noise and Goodness-of-Fit Tests for Functional Time Series
         in R
 Version: 1.0.0
 Authors@R: c(
@@ -27,10 +27,14 @@ URL: https://github.com/veritasmih/FTSgof
 BugReports: https://github.com/veritasmih/FTSgof/issues
 Config/testthat/edition: 3
 SystemRequirements: XQuartz (https://www.xquartz.org/)
-Suggests: testthat (>= 3.0.0)
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
 NeedsCompilation: no
 Packaged: 2024-09-19 17:04:33 UTC; chikuang
 Author: Mihyun Kim [aut, cre],
   Chi-Kuang Yeh [aut] (<https://orcid.org/0000-0001-7057-2096>),
   Yuqian Zhao [aut],
   Gregory Rice [ctb]
+VignetteBuilder: knitr
