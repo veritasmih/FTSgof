@@ -1,9 +1,18 @@
 FTSgof: White noise and goodness-of-fit tests for functional time series
 in R
 ================
-*Mihyun Kim, Gregory Rice, Chi-Kuang Yeh, Yuqian Zhao*
+*Mihyun Kim, Chi-Kuang Yeh, Gregory Rice, Yuqian Zhao*
 
-*September 26, 2024*
+*October 03, 2024*
+
+<!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/FTSgof)](https://CRAN.R-project.org/package=FTSgof)
+[![CRAN
+download](http://cranlogs.r-pkg.org/badges/grand-total/FTSgof?color=blue)](https://cran.r-project.org/package=FTSgof)
+[![](https://img.shields.io/github/languages/code-size/veritasmih/FTSgof.svg)](https://github.com/veritasmih/FTSgof)
+<!-- badges: end -->
 
 ### Description
 

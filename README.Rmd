@@ -1,12 +1,20 @@
 ---
 title: "FTSgof: White noise and goodness-of-fit tests for functional time series in R"
 author: |
-  | *Mihyun Kim, Gregory Rice, Chi-Kuang Yeh, Yuqian Zhao*
+  | *Mihyun Kim, Chi-Kuang Yeh, Gregory Rice, Yuqian Zhao*
 date: "*`r format(Sys.time(), '%B %d, %Y')`*"
 output: github_document
 ---
 
 \newcommand{\cov}{\mathbb{c}cov}
+
+<!-- badges: start -->
+[![CRAN
+status](https://www.r-pkg.org/badges/version/FTSgof)](https://CRAN.R-project.org/package=FTSgof)
+[![CRAN download](http://cranlogs.r-pkg.org/badges/grand-total/FTSgof?color=blue)](https://cran.r-project.org/package=FTSgof)
+[![](https://img.shields.io/github/languages/code-size/veritasmih/FTSgof.svg)](https://github.com/veritasmih/FTSgof)
+<!-- badges: end -->
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
