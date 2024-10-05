@@ -51,7 +51,7 @@ departure of the observed series from white noise process. The approximated null
 distribution of this statistic is developed under the strong white noise assumptions.
 }
 \examples{
-\dontrun{
+\donttest{
 data(Spanish_elec)
 fACF_test(Spanish_elec, H = 20)
 }

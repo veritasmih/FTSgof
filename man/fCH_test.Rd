@@ -36,7 +36,7 @@ Two portmanteau type statistics are applied: \cr \cr
 }
 \examples{
 
-\dontrun{
+\donttest{
 # generate discrete evaluations of the iid curves under the null hypothesis.
 yd_ou = dgp.ou(50, 100)
 

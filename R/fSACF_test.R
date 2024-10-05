@@ -31,7 +31,7 @@
 #' [1] Yeh CK, Rice G, Dubin JA (2023). “Functional spherical autocorrelation: A robust estimate of
 #' the autocorrelation of a functional time series.” Electronic Journal of Statistics, 17, 650–687.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(Spanish_elec)
 #' fACF_test(Spanish_elec, H = 20)
 #' }
@@ -65,7 +65,7 @@ fSACF_test <- function(f_data, H = 10, alpha = 0.05, pplot= FALSE,
     pvalues_iid = res_final[1:20,4]
     lags = 1:20
 
-    par(mar = c(4, 4, 2, 1))
+    #par(mar = c(4, 4, 2, 1))
     plot(lags, pvalues_iid, ylim=c(0,1.05), pch = 4, cex = 1, col='black', xlab='H',
          ylab='P-value', main = 'p-values of spherical test')
     abline(0.05, 0 , col='red', lty='solid')

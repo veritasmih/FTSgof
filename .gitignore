@@ -4,11 +4,9 @@
 .httr-oauth
 .DS_Store
 .quarto
-
 .Ruserdata
 inst/doc
-
-# package 
+# package
 vignette/*_cache
 vignette/*_files
 vignettes/*.html
@@ -17,3 +15,4 @@ vignettes/FTSgof/
 inst/doc/*.html
 /doc/
 /Meta/
+CRAN-SUBMISSION

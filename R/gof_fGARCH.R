@@ -29,7 +29,7 @@
 #'
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # generate discrete evaluations of the FGARCH process.
 #' set.seed(42)
 #' yd = dgp.fgarch(J=50, N=200, type = "garch")$garch_mat
@@ -129,10 +129,10 @@ gof_fGARCH <- function (f_data, M, model, H=10, pplot=NULL, max_eval=10000){
            }
            num_params=M^2-M*(M-1)/2+M
            stav=c(runif(M,10^-10,(1-10^-10)),runif(num_params-M,0,1))
-           suppressWarnings({ress=nloptr::cobyla(x0 = stav,fn = function_to_minimize2, lower=c(rep(10^-20,num_params)),
+           ress=nloptr::cobyla(x0 = stav,fn = function_to_minimize2, lower=c(rep(10^-20,num_params)),
                                upper=c(rep(1,num_params)),
                                hin = eval_g0, nl.info = FALSE,
-                               control = list(maxeval=max_eval))})
+                               control = list(maxeval=max_eval))
 
            para=as.numeric(ress$par)
            pam_hat = get_theta(para,M)
@@ -240,10 +240,10 @@ gof_fGARCH <- function (f_data, M, model, H=10, pplot=NULL, max_eval=10000){
            }
            num_params=2*(M^2-M*(M-1)/2)+M
            stav=c(runif(M,10^-10,(1-10^-10)),runif(num_params-M,0,1))
-           suppressWarnings({ress=nloptr::cobyla(x0 = stav,fn = function_to_minimize2, lower=c(rep(10^-20,num_params)),
+           ress=nloptr::cobyla(x0 = stav,fn = function_to_minimize2, lower=c(rep(10^-20,num_params)),
                                upper=c(rep(1,num_params)),
                                hin = eval_g0, nl.info = FALSE,
-                               control = list(maxeval=max_eval))})
+                               control = list(maxeval=max_eval))
            
            para=as.numeric(ress$par)
            pam_hat = get_theta(para,M)
@@ -662,7 +662,7 @@ gof_fGARCH <- function (f_data, M, model, H=10, pplot=NULL, max_eval=10000){
     for (i in 1:20){
       pmat[i]=gof_pvalue(error_fit,sigma_fit,basis,y_vec,sigma_2_proj_coefs,para,kseq[i])
     }
-    par(mar = c(4, 4, 2, 1))
+    #par(mar = c(4, 4, 2, 1))
     x<-1:20
 
 

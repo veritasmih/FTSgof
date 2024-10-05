@@ -42,7 +42,7 @@ This function plots estimated asymptotic \eqn{100 (1-\alpha)\%} confidence bound
 Additionally, it computes similar (constant) bounds under the SWN assumption.
 }
 \examples{
-\dontrun{
+\donttest{
 data(Spanish_elec) # Daily Spanish electricity price profiles
 fACF(Spanish_elec)
 fACF(Spanish_elec, H=10, wwn_bound=TRUE)

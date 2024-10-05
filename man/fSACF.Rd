@@ -32,7 +32,7 @@ where \eqn{\tilde{\mu}} is the estimated spatial median of the series.
 It also computes estimated asymptotic \eqn{(1-\alpha)100 \%} confidence lower and upper bounds, under the SWN assumption.
 }
 \examples{
-\dontrun{
+\donttest{
 data(Spanish_elec) # Daily Spanish electricity price profiles
 fSACF(Spanish_elec)
 }

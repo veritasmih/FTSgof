@@ -8,7 +8,7 @@
 #' @return A 3D rainbow plot of the functional time series data.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(Spanish_elec) # Daily Spanish electricity price profiles
 #' rainbow3D(Spanish_elec)
 #'

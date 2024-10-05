@@ -28,7 +28,7 @@
 #'
 #' @seealso \code{\link{dgp.ou}}
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Generate discrete evaluations of 100 fGARCH curves that
 #' # each curve is realized on 50 grid points.
 #' yd = dgp.fgarch(J = 50, N = 100, type = "garch")

@@ -61,7 +61,7 @@ departure of the observed series from white noise process. The approximated null
 distribution of this statistic is developed under both the strong and weak white noise assumptions.
 }
 \examples{
-\dontrun{
+\donttest{
 data(sp500) # S&P500 index
 fACF_test(OCIDR(sp500), H = 10, pplot=TRUE)
 }

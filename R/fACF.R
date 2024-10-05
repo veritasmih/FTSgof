@@ -36,7 +36,7 @@
 #'  and diagnosis by means of auto-and partial autocorrelation analysis. Computational Statistics & Data Analysis, 155, 107108.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(Spanish_elec) # Daily Spanish electricity price profiles
 #' fACF(Spanish_elec)
 #' fACF(Spanish_elec, H=10, wwn_bound=TRUE)
@@ -69,7 +69,7 @@ fACF <- function(f_data, H=20, alpha=0.05, wwn_bound=FALSE, M=NULL) {
     }
   }
   m<-max(coefficients, B_iid_bounds)
-  par(mar = c(4, 4, 2, 1))
+  #par(mar = c(4, 4, 2, 1))
   plot(lags, coefficients, ylim=c(0,m+0.3),
        type='h', xlab='Lag', ylab='Coefficient', main = 'fACF plot')
   lines(rep(B_iid_bound(f_data), H), col='red', lty='solid')

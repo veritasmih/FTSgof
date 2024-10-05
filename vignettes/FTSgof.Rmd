@@ -1,0 +1,71 @@
+---
+title: "FTSgof"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{FTSgof}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+
+
+This vignette provides an overview of how to perform exploratory data analysis, white noise hypothesis testing and the goodness-of-fit tests for functional time series (FTS) data using the functions `fport_eda`, `fport_wn`, `fport_gof`. Functional time series data consists of a sequence of curves, allowing for the analysis of complex data structures over time.
+
+
+First, ensure you have the package installed and loaded:
+
+```{r setup}
+library(FTSgof)
+```
+
+# Exploratory Data Analysis with `fport_eda'
+
+The `fport_eda` function provides a comprehensive exploratory data analysis for functional time series data.
+```{r setup2}
+# Load example data
+data(Spanish_elec)  # Daily Spanish electricity price profiles
+
+# Perform exploratory data analysis
+fport_eda(Spanish_elec, H = 20, alpha = 0.05, wwn_bound = FALSE, M = NULL)
+
+```
+
+# White Noise Hypothesis Testing with `fport_wn`
+
+The `fport_wn` function computes various white noise tests for functional time series data. The available tests are "autocovariance", "spherical", and "arch".
+```{r setup3}
+
+# Perform white noise hypothesis testing
+fport_wn(Spanish_elec, test = "autocovariance", H = 10)
+fport_wn(Spanish_elec, test = "spherical", H = 10, pplot = TRUE)
+
+# Generate fGARCH(1) data for testing
+yd_garch <- dgp.fgarch(J = 50, N = 200, type = "garch")$garch_mat
+fport_wn(yd_garch, test = "ch", H = 10, stat_Method = "norm")
+
+```
+
+# Goodness-of-fit Tests with `fport_gof`
+
+The `fport_gof` function conducts goodness-of-fit tests for functional time series data. The available tests are "far", "arch", and "garch".
+
+```{r setup4}
+
+# Perform goodness-of-fit tests
+fport_gof(Spanish_elec, test = "far", H = 10)
+
+# Example with SP500 data
+data(sp500)
+fport_gof(OCIDR(sp500), test = "arch", M = 1, H = 5)
+fport_gof(OCIDR(sp500), test = "garch", M = 1, H = 5)
+
+```
+

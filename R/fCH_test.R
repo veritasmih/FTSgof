@@ -30,7 +30,7 @@
 #'
 #' @examples
 #' 
-#' \dontrun{
+#' \donttest{
 #' # generate discrete evaluations of the iid curves under the null hypothesis.
 #' yd_ou = dgp.ou(50, 100)
 #'
@@ -201,7 +201,7 @@ fCH_test <- function (f_data, H=10, stat_Method="functional", pplot=FALSE){
     }
     x<-1:20
 
-    par(mar = c(4, 4, 2, 1))
+    #par(mar = c(4, 4, 2, 1))
     plot(x,pmat, col='black',ylim=c(0,1.05), pch = 4, cex = 1,
          xlab="H",ylab="p-values", main="p-values of conditional heteroscedasticity test", )
     abline(0.05, 0 , col='red', lty='solid')

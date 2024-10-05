@@ -48,7 +48,7 @@ It fits a FAR(1) model and then assesses the cumulative significance of lagged
 autocovariance operators from the model residuals, up to a user-selected maximum lag \eqn{H}.
 }
 \examples{
-\dontrun{
+\donttest{
 yd_far <- dgp.far(J=50, N=100, S=0.7, p=2, kernel = "Gaussian", burn_in = 50)
 gof_far(yd_far, H=5, pplot=TRUE)
 }

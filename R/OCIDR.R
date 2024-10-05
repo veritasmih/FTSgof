@@ -5,7 +5,7 @@
 #' @param f_data A \eqn{J \times N} matrix of functional time series data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
 #' @return A matrix of OCIDRs with dimensions \eqn{J \times (N-1)}, where \eqn{J} is the number of discrete grid points and \eqn{N-1} is the adjusted sample size.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(sp500)
 #' OCIDR(sp500)
 #' }

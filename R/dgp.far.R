@@ -18,7 +18,7 @@
 #'
 #' @importFrom sde BM
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Generate discrete evaluations of 200 curves, each observed at 50 grid points.
 #' yd_far = dgp.far(J = 50, N = 200, S = 0.7, p = 2, kernel = "Gaussian", burn_in = 50)
 #' }
