@@ -24,10 +24,8 @@ time series models.
 
 ### Installation
 
-FTSgof is now available on [CRAN](https://cran.r-project.org/) Hence you
+*FTSgof* is now available on [CRAN](https://cran.r-project.org/). You
 may install it by typing
-
-[CRAN](https://cran.r-project.org/)
 
 ``` r
 install.packages("SLSEdesign")
@@ -49,4 +47,4 @@ devtools::install_github("veritasmih/FTSgof")
 ### Reference
 
 Kim, M., Rice, G, Zhao, Y and Yeh, C.-K. (2024+) FTSgof: White noise and
-goodness-of-fit tests for functional time series in R. arXiv.
+goodness-of-fit tests for functional time series in R.
