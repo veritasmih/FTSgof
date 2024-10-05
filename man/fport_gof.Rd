@@ -56,7 +56,7 @@ in Rice et al. (2020).
 The optional parameters for this test are 'fdata', 'test', 'H', 'M', and 'pplot'.
 }
 \examples{
-\dontrun{
+\donttest{
 data(Spanish_elec)
 fport_gof(Spanish_elec, test = "far", H = 20, pplot=TRUE)
 

@@ -38,7 +38,7 @@ If \eqn{X_i(t)} follows an FGARCH(1,1) process,\cr
 where the innovation \eqn{\varepsilon_i(t)} follows an Ornstein–Uhlenbeck process \code{\link{dgp.ou}}, and the constant coefficient \eqn{\omega(t)=0.1t(1-t)}.
 }
 \examples{
-\dontrun{
+\donttest{
 # Generate discrete evaluations of 100 fGARCH curves that
 # each curve is realized on 50 grid points.
 yd = dgp.fgarch(J = 50, N = 100, type = "garch")

@@ -27,7 +27,7 @@
 #' [1] Kim, M., Kokoszka, P., & Rice, G. (2023). White noise testing for functional time series. Statistic Surveys, 17, 119-168.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' yd_far <- dgp.far(J=50, N=100, S=0.7, p=2, kernel = "Gaussian", burn_in = 50)
 #' gof_far(yd_far, H=5, pplot=TRUE)
 #' }
@@ -76,7 +76,7 @@ gof_far<-function(f_data, H=10, M=NULL, alpha=0.05, pplot= FALSE, residual = FAL
       pvalues_iid[h] <- V_WS_quantile_far(eg, f, lag=h, alpha, M)$p_value
     }
 
-    par(mar = c(4, 4, 2, 1))
+    #par(mar = c(4, 4, 2, 1))
     plot(lags, pvalues_iid, ylim= c(0,1.05), pch = 4, cex = 1, col='black', xlab='H',
          ylab='p-value', main = 'p-values of goodness-of-fit for FAR(1)')
     abline(0.05, 0 , col='red', lty='solid')

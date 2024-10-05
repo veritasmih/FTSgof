@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' 
-#' \dontrun{
+#' \donttest{
 #' # Generate discrete evaluations of 100 iid curves
 #' # that each curve is realized on 50 grid points.
 #' yd_ou = dgp.ou(J = 50, N = 100)

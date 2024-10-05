@@ -32,7 +32,7 @@ where \eqn{\Psi(X)(t) = \int \psi(t,s)X(s) dt} is the kernel operator, and \eqn{
 The mean function \eqn{\mu} is assumed to be zero in the generating process.
 }
 \examples{
-\dontrun{
+\donttest{
 # Generate discrete evaluations of 200 curves, each observed at 50 grid points.
 yd_far = dgp.far(J = 50, N = 200, S = 0.7, p = 2, kernel = "Gaussian", burn_in = 50)
 }

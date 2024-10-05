@@ -37,7 +37,7 @@ Then, the asymptotic distribution of the statistic \eqn{M_{N,H}} is given in The
 in Rice et al. (2020).
 }
 \examples{
-\dontrun{
+\donttest{
 # generate discrete evaluations of the FGARCH process.
 set.seed(42)
 yd = dgp.fgarch(J=50, N=200, type = "garch")$garch_mat

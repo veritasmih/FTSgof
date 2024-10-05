@@ -66,7 +66,7 @@ SpMed <- function(tt, x, dtyp = 's'){
     if (min(eigen(A1)>-1e-6))
       A <- A1
     else{
-      print('Corrected inner-product matrix is not nonnegative definite \n Using uncorrected matrix instead ')
+      message('Corrected inner-product matrix is not nonnegative definite \n Using uncorrected matrix instead ')
     }
   }
 

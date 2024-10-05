@@ -47,7 +47,7 @@
 #'
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(Spanish_elec)
 #' fport_gof(Spanish_elec, test = "far", H = 20, pplot=TRUE)
 #'

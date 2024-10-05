@@ -73,7 +73,7 @@
 #'
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(Spanish_elec)
 #' fport_wn(Spanish_elec, test = "autocovariance", pplot = TRUE)
 #' fport_wn(Spanish_elec, test = "spherical", H = 15, pplot = TRUE)

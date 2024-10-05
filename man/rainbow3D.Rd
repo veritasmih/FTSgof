@@ -18,7 +18,7 @@ The data is color-coded using a rainbow color scheme, with earlier curves in red
 A 360-degree interactive view is available through an embedded widget.
 }
 \examples{
-\dontrun{
+\donttest{
 data(Spanish_elec) # Daily Spanish electricity price profiles
 rainbow3D(Spanish_elec)
 

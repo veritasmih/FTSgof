@@ -16,7 +16,7 @@ A matrix of OCIDRs with dimensions \eqn{J \times (N-1)}, where \eqn{J} is the nu
 This function converts original price data into over-night cumulative intraday return curves (OCIDRs).
 }
 \examples{
-\dontrun{
+\donttest{
 data(sp500)
 OCIDR(sp500)
 }

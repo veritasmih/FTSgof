@@ -42,7 +42,7 @@
 #' under conditional heteroscedasticity. Journal of Multivariate Analysis, 162, 32-50.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(sp500) # S&P500 index
 #' fACF_test(OCIDR(sp500), H = 10, pplot=TRUE)
 #' }
@@ -76,7 +76,7 @@ fACF_test <- function(f_data, H = 10, iid = FALSE, M = NULL, pplot = FALSE,
         pvalues_wn[h] <- V_WS_quantile(f_data, h, alpha=alpha, M=M)$p_value
       }
       
-      par(mar = c(4, 4, 2, 1))
+      #par(mar = c(4, 4, 2, 1))
       plot(lags, pvalues_wn, ylim=c(0,1.05), pch = 1, cex = 1, col='blue', xlab='H',
            ylab='p-value', main = 'p-values of autocovariance test')
       abline(0.05, 0 , col='red', lty='solid')
@@ -92,7 +92,7 @@ fACF_test <- function(f_data, H = 10, iid = FALSE, M = NULL, pplot = FALSE,
         pvalues_iid[h] <- V_WS_quantile_iid(f_data, h, alpha=alpha)$p_value
       }
       
-      par(mar = c(4, 4, 2, 1))
+      #par(mar = c(4, 4, 2, 1))
       plot(lags, pvalues_iid, ylim=c(0,1.05), pch = 4, cex = 1, col='black', xlab='H',
            ylab='p-value', main = 'p-values of autocovariance test')
       abline(0.05, 0 , col='red', lty='solid')

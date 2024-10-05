@@ -25,7 +25,7 @@
 #' the autocorrelation of a functional time series. Electronic Journal of Statistics, 17, 650–687.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(Spanish_elec) # Daily Spanish electricity price profiles
 #' fSACF(Spanish_elec)
 #' }

@@ -33,7 +33,7 @@ This function sequentially displays the rainbow plot, the fACF plot, and the fSA
 See the help page of \code{\link{rainbow3D}}, \code{\link{fACF}}, \code{\link{fSACF}}, for more details.
 }
 \examples{
-\dontrun{
+\donttest{
 data(Spanish_elec) # Daily Spanish electricity price profiles
 fport_eda(Spanish_elec)
 }
