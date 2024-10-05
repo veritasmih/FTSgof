@@ -3,14 +3,15 @@ in R
 ================
 *Mihyun Kim, Chi-Kuang Yeh, Gregory Rice, Yuqian Zhao*
 
-*October 03, 2024*
+*October 05, 2024*
 
 <!-- badges: start -->
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/FTSgof)](https://CRAN.R-project.org/package=FTSgof)
 [![CRAN
-download](http://cranlogs.r-pkg.org/badges/grand-total/FTSgof?color=blue)](https://cran.r-project.org/package=FTSgof)
+download](https://cranlogs.r-pkg.org/badges/grand-total/FTSgof?color=blue)](https://cran.r-project.org/package=FTSgof)
+[![](https://cranlogs.r-pkg.org/badges/FTSgof)](https://cran.r-project.org/package=FTSgof)
 [![](https://img.shields.io/github/languages/code-size/veritasmih/FTSgof.svg)](https://github.com/veritasmih/FTSgof)
 <!-- badges: end -->
 
@@ -23,13 +24,27 @@ time series models.
 
 ### Installation
 
-Install the **R**
+FTSgof is now available on [CRAN](https://cran.r-project.org/) Hence you
+may install it by typing
+
+[CRAN](https://cran.r-project.org/)
+
+``` r
+install.packages("SLSEdesign")
+```
+
+or you may download the develop version by first installing the **R**
 [**`devtools`**](https://CRAN.R-project.org/package=devtools) package
-and run
+then run
 
 ``` r
 devtools::install_github("veritasmih/FTSgof")
 ```
+
+### TODO
+
+- [ ] Add descriptions and examples in README
+- [ ] Add a vignette
 
 ### Reference
 

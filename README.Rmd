@@ -11,9 +11,13 @@ output: github_document
 <!-- badges: start -->
 [![CRAN
 status](https://www.r-pkg.org/badges/version/FTSgof)](https://CRAN.R-project.org/package=FTSgof)
-[![CRAN download](http://cranlogs.r-pkg.org/badges/grand-total/FTSgof?color=blue)](https://cran.r-project.org/package=FTSgof)
+[![CRAN
+download](https://cranlogs.r-pkg.org/badges/grand-total/FTSgof?color=blue)](https://cran.r-project.org/package=FTSgof)
+[![](https://cranlogs.r-pkg.org/badges/FTSgof)](https://cran.r-project.org/package=FTSgof)
 [![](https://img.shields.io/github/languages/code-size/veritasmih/FTSgof.svg)](https://github.com/veritasmih/FTSgof)
 <!-- badges: end -->
+
+
 
 
 ```{r setup, include=FALSE}
@@ -26,11 +30,24 @@ Implementation of the robust tools to 1) visualize and perform inference on the 
 
 ### Installation
 
-Install the **R** [**`devtools`**](https://CRAN.R-project.org/package=devtools) package and run
+FTSgof is now available on [CRAN](https://cran.r-project.org/) Hence you may install it by typing
 
-```{r, eval=FALSE}
+
+
+[CRAN](https://cran.r-project.org/)
+
+```r
+install.packages("SLSEdesign")
+```
+or you may download the develop version by first installing the **R** [**`devtools`**](https://CRAN.R-project.org/package=devtools) package then run
+
+```r
 devtools::install_github("veritasmih/FTSgof")
 ```
+### TODO
+
+- [ ] Add descriptions and examples in README
+- [ ] Add a vignette
 
 ### Reference
 
