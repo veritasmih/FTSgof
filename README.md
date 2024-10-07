@@ -3,7 +3,7 @@ in R
 ================
 *Mihyun Kim, Chi-Kuang Yeh, Gregory Rice, Yuqian Zhao*
 
-*October 05, 2024*
+*October 07, 2024*
 
 <!-- badges: start -->
 
@@ -28,7 +28,7 @@ time series models.
 may install it by typing
 
 ``` r
-install.packages("SLSEdesign")
+install.packages("FTSgof")
 ```
 
 or you may download the develop version by first installing the **R**
@@ -41,10 +41,40 @@ devtools::install_github("veritasmih/FTSgof")
 
 ### TODO
 
+- [x] Add a vignette
 - [ ] Add descriptions and examples in README
-- [ ] Add a vignette
 
 ### Reference
 
-Kim, M., Rice, G, Zhao, Y and Yeh, C.-K. (2024+) FTSgof: White noise and
-goodness-of-fit tests for functional time series in R.
+All the implementation and theory are based on the following papers:
+
+- Kim, M., Rice, G, Zhao, Y and Yeh, C.-K. (2024+) FTSgof: White noise
+  and goodness-of-fit tests for functional time series in R. *Under
+  review*.
+
+The associated papers are:
+
+1.  Aue, A., Horváth, L., and F. Pellatt, D. (2017). Functional
+    generalized autoregressive conditional heteroskedasticity. *Journal
+    of Time Series Analysis*, 38, 3-21.
+
+2.  Kim, M., Kokoszka, P., and Rice, G. (2023). White noise testing for
+    functional time series. *Statistic Surveys*, 17, 119-168.
+
+3.  Kokoszka, P., Rice, G., and Shang, H. L. (2017). Inference for the
+    autocovariance of a functional time series under conditional
+    heteroscedasticity. *Journal of Multivariate Analysis*, 162, 32-50.
+
+4.  Mestre, G., Portela, J., Rice, G., San Roque, A. M., and Alonso, E.
+    (2021). Functional time series model identification and diagnosis by
+    means of auto-and partial autocorrelation analysis. *Computational
+    statistics & data analysis*, 155, 107108.
+
+5.  Rice, G., Wirjanto, T., and Zhao, Y. (2020). Tests for conditional
+    heteroscedasticity of functional data. *Journal of Time Series
+    Analysis*, 41, 733-758.
+
+6.  Yeh, C. K., Rice, G., and Dubin, J.A. (2023). Functional spherical
+    autocorrelation: A robust estimate of the autocorrelation of a
+    functional time series. *Electronic Journal of Statistics*, 17,
+    650-687.
