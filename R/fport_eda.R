@@ -2,11 +2,12 @@
 #'
 #' @description This function sequentially displays the fACF plot, the fSACF and the rainbow plot of a functional time series (FTS) for comprehensive exploratory data analysis.
 #'
-#' @param f_data A \eqn{J \times N} matrix of FTS data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
+#' @param f_data A functional object composed by \eqn{N} functional time series, given \eqn{J} grid points in the domains; or a \eqn{J \times N} matrix of functional time series data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
 #' @param H A positive integer representing the maximum lag for computing the coefficients and confidence bounds. This value determines the range of lags included in the fACF and fSACF plots.
 #' @param alpha A numeric value between 0 and 1 indicating the significance level for the confidence bounds in the fACF and fSACF plots.
 #' @param wwn_bound A Boolean value allowing the user to turn on the WWN bound in the fACF plot. FALSE by default. Speeds down computation when TRUE.
 #' @param M A positive integer value. The number of Monte-Carlo simulations used to compute the confidence bounds under the WWN assumption. 
+#' @param J A positive integer value. Evaluate the functional objects at a pre-specified number of points on a grid J
 #' If \eqn{M = NULL, M = \text{floor}((\max(150 - N, 0) + \max(100 - J, 0) + (J / \sqrt{2})))},
 #' ensuring that the number of Monte Carlo simulations is adequate based on the dataset size.
 #' @details This function sequentially displays the rainbow plot, the fACF plot, and the fSACF of an FTS for comprehensive exploratory data analysis.
@@ -37,7 +38,7 @@
 #' @importFrom rgl open3d plot3d lines3d axes3d title3d rglwidget
 #' @import stats
 #'
-fport_eda <- function(f_data, H = 20, alpha = 0.05, wwn_bound = FALSE, M = NULL) {
+fport_eda <- function(f_data, H = 20, alpha = 0.05, wwn_bound = FALSE, M = NULL, J = NULL) {
   
   if ((H < 1) | (H %% 1 != 0)) {
     stop("The parameter 'H' must be a positive integer.")
@@ -46,13 +47,31 @@ fport_eda <- function(f_data, H = 20, alpha = 0.05, wwn_bound = FALSE, M = NULL)
     stop("The 'alpha' parameter must be a value between 0 and 1.")
   }
 
-  fACF(f_data, H, alpha, wwn_bound, M)
+  fACF(f_data, H, alpha, wwn_bound, M, J)
   readline(prompt = "Hit <Return> to see next plot: ")
 
-  fSACF(f_data, H, alpha)
+  fSACF(f_data, H, alpha, J)
   readline(prompt = "Hit <Return> to see next plot: ")
   
-  rainbow3D(f_data)
+  
+  
+  data_class <- class(f_data)[[1]]
+  if (data_class=="funData") {
+    rainbow3D(t(f_data@X))
+    
+  } else if (data_class=="matrix" ) {
+    rainbow3D(f_data)
+    
+  } else if (data_class=="fd" ) {
+    tempFun <- fd2funData(f_data, argvals = seq(0, 1, length.out = length(f_data[["fdnames"]][["time"]])  ) )
+    f_data <- t(tempFun@X)
+    rainbow3D(f_data)
+    
+  } else {
+    stop("The input must be either a matrix or a funData object.")
+  }
+  
+  
   return(rglwidget())
 }
 

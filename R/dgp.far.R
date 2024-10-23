@@ -8,9 +8,10 @@
 #' @param p The order of the autoregressive process. Default is 1.
 #' @param kernel The type of kernel function \eqn{\psi} used for the autoregressive process. Can be "Gaussian" or "Wiener". Default is "Gaussian".
 #' @param burn_in The number of initial points discarded to eliminate transient effects. Default is 50.
+#' @param fd TRUE or FALSE: determine whether it generates functional objects (TRUE) or discrete realizations of functional objects (FALSE-default).
 #'
-#' @return A \eqn{J \times N} matrix where each column contains a curve evaluated at \eqn{J} grid points, generated from the FAR(p) model.
-#'
+#' @return A functional object composed by \eqn{N} functional time series, given \eqn{J} grid points in the domains, generated from the FAR(p) model, if fd == TRUE; otherwise a J x N matrix.
+#' 
 #' @details The functional autoregressive model of order \eqn{p} is given by:
 #' \deqn{X_i(t) -\mu(t) = \sum_{j=1}^{p} \Psi(X_{i-j}-\mu)(t) + \epsilon_i(t),}
 #' where \eqn{\Psi(X)(t) = \int \psi(t,s)X(s) dt} is the kernel operator, and \eqn{\epsilon_i(t)} are i.i.d. errors generated from a standard Brownian motion process.
@@ -19,11 +20,11 @@
 #' @importFrom sde BM
 #' @examples
 #' \donttest{
-#' # Generate discrete evaluations of 200 curves, each observed at 50 grid points.
-#' yd_far = dgp.far(J = 50, N = 200, S = 0.7, p = 2, kernel = "Gaussian", burn_in = 50)
+#' # Generate 200 functional time series objects, each curve observed at 50 grid points.
+#' yd_far = dgp.far(J = 50, N = 200, S = 0.7, p = 1, kernel = "Gaussian", burn_in = 50)
 #' }
 #'
-dgp.far <- function (J, N, S = 0.5, p = 1, kernel = "Gaussian", burn_in = 50)
+dgp.far <- function (J, N, S = 0.5, p = 1, kernel = "Gaussian", burn_in = 50, fd = FALSE)
 {
   grid <- (1:J)/J
 
@@ -61,5 +62,11 @@ dgp.far <- function (J, N, S = 0.5, p = 1, kernel = "Gaussian", burn_in = 50)
 
   }
 
-  far_mat[, (burn_in + 1):(burn_in + N)]
+  far_dat <- far_mat[, (burn_in + 1):(burn_in + N)]
+  
+  if (fd == TRUE){
+    far_dat  <- funData(argvals = 1:J, X= t(far_dat) )
+  } 
+
+  return(far_dat)
 }

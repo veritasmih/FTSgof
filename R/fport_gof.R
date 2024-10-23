@@ -2,13 +2,14 @@
 #'
 #' @description It computes three different goodness-of-fit tests for functional time series. All goodness-of-fit tests in this package are accessible through this function.
 #'
-#' @param f_data A \eqn{J \times N} matrix of functional time series data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
+#' @param f_data A functional object composed by \eqn{N} functional time series, given \eqn{J} grid points in the domains; or a \eqn{J \times N} matrix of functional time series data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
 #' @param test A string specifying the goodness-of-fit test. Currently available tests are referred
 #' to by their string handles: "far", "arch" and "garch". Please see the Details section of the documentation.
 #' @param H A positive integer specifying the maximum lag for which test statistics are computed.
 #' @param M A positive integer specifying the number of Monte Carlo simulations used to approximate the null distribution in the "far" test, and the number of basis functions used in the "arch" and "garch" tests. 
 #' If \eqn{M = NULL}, then for the "far" test, \eqn{M} is calculated as \eqn{\text{floor}((\max(150 - N, 0) + \max(100 - J, 0) + (J / \sqrt{2})))}, ensuring the number of Monte Carlo simulations is adequate based on the dataset size.
 #' For the "arch" or "garch" test, \eqn{M} is set to 1.
+#' @param J A positive integer value. Evaluate the functional objects at a pre-specified number of points on a grid J. The default value is NULL, indicating no change on the number of grid points.
 #' @param pplot A Boolean value. If TRUE, the function will produce a plot of p-values of the test
 #' as a function of maximum lag \eqn{H}, ranging from \eqn{H=1} to \eqn{H=20}, which may increase the computation time.
 #' @param residual A data frame. If TRUE, the function will provide the residuals obtained from fitting the FAR(1) model.
@@ -63,10 +64,48 @@
 #' @importFrom nloptr cobylac
 #' @importFrom fda create.bspline.basis smooth.basis eval.fd pca.fd fdPar
 #'
-fport_gof <- function(f_data, test = "far", H=10, M=NULL, 
+fport_gof <- function(f_data, test = "far", H=10, M=NULL, J=NULL,
                       pplot=FALSE, residual = FALSE) {
-
+  
   tests = c("far", "arch", "garch")
+  
+  data_class <- class(f_data)[[1]]
+  if (data_class=="funData" ) {
+    if (is.null(J) == TRUE){
+      f_data <- t(f_data@X)
+    } else {
+      f_data <- t(f_data@X)
+      J_raw <- NROW(f_data)
+      basis <- create.bspline.basis(rangeval = c(0,1), nbasis = 25)
+      fd_data <- smooth.basis(1:J_raw/J_raw, y = f_data, fdParobj = basis)$fd
+      f_data <- eval.fd(fd_data, 1:J/J)
+    }
+    
+  } else if (data_class=="matrix" ) {
+    if (is.null(J) == TRUE){
+      f_data <- f_data
+    } else {
+      J_raw <- NROW(f_data)
+      basis <- create.bspline.basis(rangeval = c(0,1), nbasis = 25)
+      fd_data <- smooth.basis(1:J_raw/J_raw, y = f_data, fdParobj = basis)$fd
+      f_data <- eval.fd(fd_data, 1:J/J)
+    }
+    
+  } else if (data_class=="fd" ) {
+    if (is.null(J) == TRUE){
+      tempFun <- fd2funData(f_data, argvals = seq(0, 1, length.out = length(f_data[["fdnames"]][["time"]])  ) )
+      f_data <- t(tempFun@X) # realization can be different from the original discrete data given the smoothing
+    } else {
+      tempFun <- fd2funData(f_data, argvals = seq(0, 1, length.out = J)  ) 
+      f_data <- t(tempFun@X)
+    }
+    
+  } else {
+    stop("The input must be either a matrix or a funData object.")
+  }
+  
+  
+
   if (!(test %in% tests)) {
     stop("Please see the documentation for available tests.")
   }
@@ -74,9 +113,6 @@ fport_gof <- function(f_data, test = "far", H=10, M=NULL,
     if (!all.equal(H, as.integer(H)) | H <= 0) {
       stop("Invalid arguments, lag must be a positive integer")
     }
-  }
-  if (!is.matrix(f_data)) {
-    stop("Invalid arguments, functional data f_data must be passed in matrix form.")
   }
   if (!is.null(M)) {
     if (!all.equal(M, as.integer(M)) | M < 0) {
@@ -87,7 +123,7 @@ fport_gof <- function(f_data, test = "far", H=10, M=NULL,
     M=1
   }
   if (test == "far") {
-
+    
     final<-gof_far(f_data, H, M, alpha=0.05, pplot, residual, suppress_print_output=TRUE)
     if (residual == TRUE){
       #title_print <- sprintf("Goodness-of-fit test for FAR(1)\n\n")
@@ -96,41 +132,41 @@ fport_gof <- function(f_data, test = "far", H=10, M=NULL,
       #lag_print <- sprintf("maximum lag H = %d\n", H)
       #p_val_print <- sprintf("p-value = %f\n", final$p_value)
       #message(c(title_print, null_print, null_print, samp_print, p_val_print))
-
+      
       return(list(resid = final$res))
-
+      
       #return(list(statistic = final$statistic, p_value = as.numeric(final$p_value), resid = final$res))
     }
-
+    
     title_print <- sprintf("Goodness-of-fit test for FAR(1)\n\n")
     null_print <- sprintf("Null hypothesis: FAR(1) model is adequate for the series.\n")
     samp_print <- sprintf("sample size = %d\n", NCOL(f_data))
     lag_print <- sprintf("maximum lag H = %d\n", H)
     p_val_print <- sprintf("p-value = %f\n", final$p_value)
     message(c(title_print, null_print, samp_print, lag_print, p_val_print))
-
+    
     #return(list(statistic = final$statistic, p_value = as.numeric(final$p_value)))
-
+    
   } else if (test == "arch") {
     final<-gof_fGARCH(f_data, M, model="arch", H, pplot, max_eval=10000)
-
+    
     title_print <- sprintf("Goodness-of-fit test for fARCH(1)\n\n")
     null_print <- sprintf("Null hypothesis: fARCH(1) model is adequate for the series.\n")
     samp_print <- sprintf("sample size = %d\n", NCOL(f_data))
     lag_print <- sprintf("maximum lag H = %d\n", H)
     p_val_print <- sprintf("p-value = %f\n", final)
     message(c(title_print, null_print, samp_print, lag_print, p_val_print))
-
+    
   } else if (test == "garch") {
     final<-gof_fGARCH(f_data, M, model="garch", H, pplot, max_eval=10000)
-
+    
     title_print <- sprintf("Goodness-of-fit test for fGARCH(1,1)\n\n")
     null_print <- sprintf("Null hypothesis: fGARCH(1,1) model is adequate for the series.\n")
     samp_print <- sprintf("sample size = %d\n", NCOL(f_data))
     lag_print <- sprintf("maximum lag H = %d\n", H)
     p_val_print <- sprintf("p-value = %f\n", final)
     message(c(title_print, null_print, samp_print, lag_print, p_val_print))
-
+    
   }
-
+  
 }

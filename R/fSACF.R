@@ -3,11 +3,10 @@
 #' @description This function offers a graphical summary of the fSACF of a functional time series (FTS) across different time lags \eqn{h = 1:H}.
 #' It also plots \eqn{100 \times (1-\alpha)\%}  confidence bounds developed under strong white noise (SWN) assumption for all lags \eqn{h = 1:H}.
 #'
-#' @param f_data A \eqn{J \times N} matrix of functional time series data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
+#' @param f_data A functional object composed by \eqn{N} functional time series, given \eqn{J} grid points in the domains; or a \eqn{J \times N} matrix of functional time series data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
 #' @param H A positive integer value. The maximum lag for which to compute the coefficients and confidence bounds.
 #' @param alpha A numeric value between 0 and 1 specifying the significance level to be used for the confidence bounds.
-#'
-#'
+#' @param J A positive integer value. Evaluate the functional objects at a pre-specified number of points on a grid J. The default value is NULL, indicating no change on the number of grid points.
 #' @details This function computes and plots functional spherical autocorrelation coefficients at lag \eqn{h}, for \eqn{h = 1:H}.
 #' The fSACF at lag \eqn{h} is computed by the average of the inner product of lagged pairs of
 #' the series \eqn{X_i} and \eqn{X_{i+h}} that have been centered and scaled:
@@ -30,17 +29,51 @@
 #' fSACF(Spanish_elec)
 #' }
 #' @export
-fSACF <- function (f_data, H = 20, alpha = 0.05)
-{
+fSACF <- function (f_data, H = 20, alpha = 0.05, J = NULL) {
   if ((H < 1) | (H%%1 != 0)) {
     stop("The parameter 'H' must be a positive integer.")
   }
   if ((alpha > 1) | (alpha < 0)) {
     stop("The 'alpha' parameter must be a value between 0 and 1.")
   }
-
+  
+  data_class <- class(f_data)[[1]]
+  if (data_class=="funData" ) {
+    if (is.null(J) == TRUE){
+      f_data <- t(f_data@X)
+    } else {
+      f_data <- t(f_data@X)
+      J_raw <- NROW(f_data)
+      basis <- create.bspline.basis(rangeval = c(0,1), nbasis = 25)
+      fd_data <- smooth.basis(1:J_raw/J_raw, y = f_data, fdParobj = basis)$fd
+      f_data <- eval.fd(fd_data, 1:J/J)
+    }
+    
+  } else if (data_class=="matrix" ) {
+    if (is.null(J) == TRUE){
+      f_data <- f_data
+    } else {
+      J_raw <- NROW(f_data)
+      basis <- create.bspline.basis(rangeval = c(0,1), nbasis = 25)
+      fd_data <- smooth.basis(1:J_raw/J_raw, y = f_data, fdParobj = basis)$fd
+      f_data <- eval.fd(fd_data, 1:J/J)
+    }
+    
+  } else if (data_class=="fd" ) {
+    if (is.null(J) == TRUE){
+      tempFun <- fd2funData(f_data, argvals = seq(0, 1, length.out = length(f_data[["fdnames"]][["time"]])  ) )
+      f_data <- t(tempFun@X) # realization can be different from the original discrete data given the smoothing
+    } else {
+      tempFun <- fd2funData(f_data, argvals = seq(0, 1, length.out = J)  ) 
+      f_data <- t(tempFun@X)
+    }
+    
+  } else {
+    stop("The input must be either a matrix or a funData object.")
+  }
+  
+  
   res_raw <- my_new_receipt(t(f_data), H)
-
   J = NROW(f_data)
   N = NCOL(f_data)
   coefficients = rep(0, H)

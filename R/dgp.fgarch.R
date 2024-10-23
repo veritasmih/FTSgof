@@ -9,8 +9,9 @@
 #' @param beta_par The GARCH kernel coefficient function in the conditional volatility equation. If it is missing, "\eqn{12 t (1-t) s (1-s)}" is used to generate FGARCH, for \eqn{t\in[0,1]} and \eqn{s\in[0,1]}.
 #'
 #' @return List of generated processes:
-#' @return garch_mat: FARCH/GARCH sequences, where the finite realization of curves are stored in columns;
-#' @return sigma_mat: Conditional volatility sequences,  where the finite realization of curves are stored in columns.
+#' @return garch: \eqn{N} FARCH/GARCH functional object time series, given \eqn{J} grid points in the domains, if fd == TRUE; otherwise a J x N matrix.
+#' @return sigma: \eqn{N} conditional volatility functional object time series,  given \eqn{J} grid points in the domains, if fd == TRUE; otherwise a J x N matrix.
+#' @param  fd TRUE or FALSE: determine whether it generates functional objects (TRUE) or discrete realizations of functional objects (FALSE-default).
 #'
 #' @export
 #'
@@ -29,8 +30,8 @@
 #' @seealso \code{\link{dgp.ou}}
 #' @examples
 #' \donttest{
-#' # Generate discrete evaluations of 100 fGARCH curves that
-#' # each curve is realized on 50 grid points.
+#' # Generate 100 fGARCH functional object curves that
+#' # each curve is observed on 50 grid points.
 #' yd = dgp.fgarch(J = 50, N = 100, type = "garch")
 #' yd_garch = yd$garch_mat
 #' }
@@ -38,7 +39,7 @@
 #' [1] Hormann, S., Horvath, L., Reeder, R. (2013). A functional version of the ARCH model. Econometric Theory. 29(2), 267-288. <doi:10.1017/S0266466612000345>.\cr
 #' [2] Aue, A., Horvath, L., F. Pellatt, D. (2017). Functional generalized autoregressive conditional heteroskedasticity. Journal of Time Series Analysis. 38(1), 3-21. <doi:10.1111/jtsa.12192>.\cr
 #'
-dgp.fgarch <- function(J, N, type, alpha_par=NULL, beta_par=NULL){
+dgp.fgarch <- function(J, N, type, alpha_par=NULL, beta_par=NULL, fd = FALSE){
   times = 1:J/J
   int_approx <- function(x){
     temp_n = nrow(x)
@@ -49,7 +50,7 @@ dgp.fgarch <- function(J, N, type, alpha_par=NULL, beta_par=NULL){
          arch = {
            no_proc = 1000 + N
            sim_sigma2_matrix = sim_garch_matrix = matrix(NA, J, no_proc)
-           error_matrix = dgp.ou(J = J, N = no_proc)
+           error_matrix = dgp.ou(J = J, N = no_proc,  fd = FALSE)
 
            if(is.null(alpha_par) == TRUE) {
              alpha_par = function(t,s){
@@ -77,7 +78,7 @@ dgp.fgarch <- function(J, N, type, alpha_par=NULL, beta_par=NULL){
          garch = {
            no_proc = 1000 + N
            sim_sigma2_matrix = sim_garch_matrix = matrix(NA, J, no_proc)
-           error_matrix = dgp.ou(J = J, N = no_proc)
+           error_matrix = dgp.ou(J = J, N = no_proc,  fd = FALSE)
 
            if( is.null(alpha_par) == TRUE) {
              alpha_par = function(t,s){
@@ -109,6 +110,14 @@ dgp.fgarch <- function(J, N, type, alpha_par=NULL, beta_par=NULL){
            }
          },
          stop("Enter something to switch me!"))
-  return(list(garch_mat = sim_garch_matrix[,1001:(1000 + N)],
-              sigma_mat = sim_sigma2_matrix[,1001:(1000 + N)]))
+  
+  garch_dat <- sim_garch_matrix[,1001:(1000 + N)]
+  sigma_dat <- sim_sigma2_matrix[,1001:(1000 + N)]
+  
+  if (fd == TRUE){
+    garch_dat <- funData(argvals = 1:J, X= t(garch_dat) )
+    sigma_dat <- funData(argvals = 1:J, X= t(sigma_dat) )
+  } 
+  
+  return(list(garch = garch_dat, sigma = sigma_dat))
 }

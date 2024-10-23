@@ -3,10 +3,12 @@
 #'
 #' @description It generates iid functional curve data following the Ornstein–Uhlenbeck process.
 #'
-#' @param J The number of grid points in each curve observation.
-#' @param N The sample size.
+#' @param J  The number of grid points in each curve observation.
+#' @param N  The sample size.
+#' @param fd TRUE or FALSE: determine whether it generates functional objects (TRUE) or discrete realizations of functional objects (FALSE-default).
 #'
-#' @return A (grid points) x (number of observations) matrix for iid sequences, where the finite realization of curves are stored in columns.
+#' @return A functional object composed by \eqn{N} functional curves,  given \eqn{J} grid points in the domains, generated from the OU process, if fd == TRUE. When the argument fd sets FALSE, the function returns a \eqn{J} x \eqn{N} matrix for iid sequences, where the finite realization of curves are stored in columns.
+#' 
 #' @export
 #'
 #' @importFrom MASS mvrnorm
@@ -24,7 +26,7 @@
 #' yd_ou = dgp.ou(J = 50, N = 100)
 #' }
 #'
-dgp.ou <- function(J, N){
+dgp.ou <- function(J, N, fd = FALSE){
   times=1:J/J
   # control the covariance structure
   comat=matrix(NA,J,J)
@@ -32,6 +34,11 @@ dgp.ou <- function(J, N){
     comat[i,]=exp(1)^(-times[i]/2-times/2)*pmin(exp(1)^(times[i]),exp(1)^(times))
   }
   fiid=mvrnorm(n = N, mu = c(rep(0,J)), Sigma = comat, empirical = FALSE)
-
-  return(t(fiid))
+  
+  if (fd == TRUE){
+    fiid <- funData(argvals = 1:J, X= fiid )
+  } else{
+    fiid <- t(fiid)
+  }
+  return(fiid)
 }

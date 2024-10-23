@@ -2,7 +2,7 @@
 #'
 #' @description It computes a variety of white noise tests for functional times series (FTS) data. All white noise tests in this package are accessible through this function.
 #'
-#' @param f_data A \eqn{J \times N} matrix of functional time series data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
+#' @param f_data A functional object composed by \eqn{N} functional time series, given \eqn{J} grid points in the domains; or a \eqn{J \times N} matrix of functional time series data, where \eqn{J} is the number of discrete points in a grid and \eqn{N} is the sample size.
 #' @param test A string specifying the hypothesis test. Currently available tests are referred
 #' to by their string handles: "autocovariance", "spherical" and "ch". Please see the Details section of the documentation.
 #' @param H A positive integer specifying the maximum lag for which test statistics are computed.
@@ -11,6 +11,7 @@
 #' @param M A positive integer specifying the number of Monte Carlo simulations used to approximate the null distribution in the "autocovariance" test under the WWN assumption.
 #' If \eqn{M = NULL, M = \text{floor}((\max(150 - N, 0) + \max(100 - J, 0) + (J / \sqrt{2})))},
 #' ensuring that the number of Monte Carlo simulations is adequate based on the dataset size.
+#' @param J A positive integer value. Evaluate the functional objects at a pre-specified number of points on a grid J. The default value is NULL, indicating no change on the number of grid points.
 #' @param stat_Method A string specifying the test method to be used in the "ch" test. Options include:
 #' \describe{
 #'   \item{"norm"}{Uses \eqn{V_{N,H}}.}
@@ -87,11 +88,48 @@
 #'
 #' @export
 #' @import stats
-fport_wn <- function(f_data, test = "autocovariance", H=10, iid=FALSE, M=NULL,
-                       stat_Method = "functional", pplot=FALSE) {
+fport_wn <- function(f_data, test = "autocovariance", H=10, iid=FALSE, M=NULL, J=NULL,
+                       stat_Method = "functional", pplot=FALSE ) {
 
   tests = c("autocovariance", "spherical", "ch")
-
+  
+  data_class <- class(f_data)[[1]]
+  if (data_class=="funData" ) {
+    if (is.null(J) == TRUE){
+      f_data <- t(f_data@X)
+    } else {
+      f_data <- t(f_data@X)
+      J_raw <- NROW(f_data)
+      basis <- create.bspline.basis(rangeval = c(0,1), nbasis = 25)
+      fd_data <- smooth.basis(1:J_raw/J_raw, y = f_data, fdParobj = basis)$fd
+      f_data <- eval.fd(fd_data, 1:J/J)
+    }
+    
+  } else if (data_class=="matrix" ) {
+    if (is.null(J) == TRUE){
+      f_data <- f_data
+    } else {
+      J_raw <- NROW(f_data)
+      basis <- create.bspline.basis(rangeval = c(0,1), nbasis = 25)
+      fd_data <- smooth.basis(1:J_raw/J_raw, y = f_data, fdParobj = basis)$fd
+      f_data <- eval.fd(fd_data, 1:J/J)
+    }
+    
+  } else if (data_class=="fd" ) {
+    if (is.null(J) == TRUE){
+      tempFun <- fd2funData(f_data, argvals = seq(0, 1, length.out = length(f_data[["fdnames"]][["time"]])  ) )
+      f_data <- t(tempFun@X) # realization can be different from the original discrete data given the smoothing
+    } else {
+      tempFun <- fd2funData(f_data, argvals = seq(0, 1, length.out = J)  ) 
+      f_data <- t(tempFun@X)
+    }
+    
+  } else {
+    stop("The input must be either a matrix or a funData object.")
+  }
+  
+  
+  
   if (!(test %in% tests)) {
     stop("Please see the documentation for available tests.")
   }
