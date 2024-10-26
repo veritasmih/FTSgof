@@ -54,10 +54,12 @@ dgp.far <- function (J, N, S = 0.5, p = 1, kernel = "Gaussian", burn_in = 50, fd
   far_mat <- matrix(0, nrow = J, ncol = N + burn_in)
   far_mat[, 1:p] <- error_mat[, 1:p]
   for (i in (p+1):(N + burn_in)) {
-
-    for (j in 1:p) {
-      far_mat[,i] <- far_mat[,i] + c*t(phi)%*%far_mat[,i - j]/J
+    for (j in 1:p){
+      far_mat[, i] <- c*t(phi) %*% far_mat[, i-j]/J
     }
+    # for (j in 1:p) {
+    #   far_mat[,i] <- far_mat[,i] + c*t(phi)%*%far_mat[,i - j]/J
+    # }
     far_mat[,i] <- far_mat[,i] + error_mat[,i]
 
   }
