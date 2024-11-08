@@ -66,6 +66,8 @@ gof_far<-function(f_data, H=10, M=NULL, alpha=0.05, pplot= FALSE, residual = FAL
     f[,,h] <- xi[,h:(N-1)]%*%t(eg[,1:(N-h)])
   }
   
+  results <-V_WS_quantile_far(eg, f, lag=H, alpha, M)
+  
   if (pplot == TRUE) {
     
     pvalues_iid = rep(0, 20)
@@ -85,28 +87,21 @@ gof_far<-function(f_data, H=10, M=NULL, alpha=0.05, pplot= FALSE, residual = FAL
            col=c('black'), pch = c(4), cex=1.1, bty = 'n')
   }
   
-  results <-V_WS_quantile_far(eg, f, lag=H, alpha, M)
-  
-  if (suppress_print_output == FALSE) {
-    title_print <- sprintf("Goodness-of-fit test for FAR(1)\n\n")
-    null_print <- sprintf("null hypothesis: FAR(1) model is adequate for the series.\n")
-    p_val_print <- sprintf("p-value = %f\n", results$p_value)
-    samp_print <- sprintf("sample size = %d\n", NCOL(f_data))
-    lag_print <- sprintf("lag = %d\n\n\n", H)
-    message(c(title_print, null_print, p_val_print, samp_print,
-              lag_print))
-  }
+  # if (suppress_print_output == FALSE) {
+  #   title_print <- sprintf("Goodness-of-fit test for FAR(1)\n\n")
+  #   null_print <- sprintf("null hypothesis: FAR(1) model is adequate for the series.\n")
+  #   p_val_print <- sprintf("p-value = %f\n", results$p_value)
+  #   samp_print <- sprintf("sample size = %d\n", NCOL(f_data))
+  #   lag_print <- sprintf("lag = %d\n\n\n", H)
+  #   message(c(title_print, null_print, p_val_print, samp_print,
+  #             lag_print))
+  # }
   if (suppress_raw_output == FALSE) {
-    
     if (residual == TRUE) {
       eg_mtx <- t(eg)
       eg_fd <- funData(argvals = 1:dim(eg_mtx)[2], X= eg_mtx)
       return(list(statistic = results$statistic, quantile = results$quantile, p_value = results$p_val, res= eg_fd))
     }
     return(results)
-    
-    
   }
-  
-  
 }
