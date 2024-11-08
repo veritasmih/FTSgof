@@ -34,7 +34,8 @@ rainbow3D <- function(data_mtx) {
   x <- 1:N
   y <- data_mtx
   
-  open3d()
+  # open3d()
+  open3d(useNULL = TRUE)
   
   plot3d(x, 1:ncol(y), y, type = "n", xlab = "", ylab = "", zlab = "", box = FALSE)
   
@@ -45,10 +46,8 @@ rainbow3D <- function(data_mtx) {
   
   axes3d()
   title3d(xlab = "1:N", ylab = "1:J", zlab = "")
-  
-  rglwidget()
-  
-  colnames(data_mtx) <- paste("Grid", 1:ncol(data_mtx), sep = "_")
 
+  colnames(data_mtx) <- paste("Grid", 1:ncol(data_mtx), sep = "_")
+  rglwidget()
 }
 
